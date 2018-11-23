@@ -5,7 +5,7 @@ apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '28.0.3'
     resourcePrefix "materialcolorpicker__"
 
     defaultConfig {
@@ -23,11 +23,11 @@ android {
     }
 }
 
-def siteUrl = 'https://github.com/Pes8/android-material-color-picker-dialog/'       // Homepage URL of the library
-def gitUrl = 'https://github.com/Pes8/android-material-color-picker-dialog/'        // Git repository URL
-group = "com.pes.materialcolorpicker"                                               // Maven Group ID for the artifact
+def siteUrl = 'https://github.com/pastafarianGit/android-material-color-picker-dialog'       // Homepage URL of the library
+def gitUrl = 'https://github.com/pastafarianGit/android-material-color-picker-dialog'        // Git repository URL
+group = "com.pes.materialcolorpicker.pastafarian"                                               // Maven Group ID for the artifact
 // This is the library version used when deploying the artifact
-version = "1.2.4"
+version = "1.2.5"
 
 install {
     repositories.mavenInstaller {
@@ -65,9 +65,10 @@ install {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+
+    testImplementation 'junit:junit:4.12'
 }
 
 

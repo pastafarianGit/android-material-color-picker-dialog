@@ -7,11 +7,14 @@ import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
 public class MainActivity extends Activity implements ColorPickerCallback {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,19 @@ public class MainActivity extends Activity implements ColorPickerCallback {
                 123, // Default Green value
                 67 // Default Blue value
         );
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(colorPicker.getWindow().getAttributes());
+        int dialogWindowWidth = (int) (500 * 0.7f);
+        // Set alert dialog height equal to screen height 70%
+        int dialogWindowHeight = (int) (500 * 0.7f);
+        Log.d(TAG, "display height: " + dialogWindowHeight + " display width; " +dialogWindowWidth);
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        layoutParams.height = dialogWindowHeight;
+        colorPicker.getWindow().setAttributes(layoutParams);
 
         setContentView(R.layout.activity_main);
 

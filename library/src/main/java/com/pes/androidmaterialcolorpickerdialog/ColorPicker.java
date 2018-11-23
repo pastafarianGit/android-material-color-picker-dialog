@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.text.InputFilter;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +17,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -30,6 +33,7 @@ import static com.pes.androidmaterialcolorpickerdialog.ColorFormatHelper.formatC
  */
 public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListener {
 
+    private static final String TAG = ColorPicker.class.getSimpleName();
     private final Activity activity;
 
     private View colorView;
@@ -40,6 +44,7 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
 
     private boolean withAlpha;
     private boolean autoclose;
+    private LinearLayout dialogContainer;
 
     /**
      * Creator of the class. It will initialize the class with black color as default
@@ -48,7 +53,6 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
      */
     public ColorPicker(Activity activity) {
         super(activity);
-
         this.activity = activity;
 
         if (activity instanceof ColorPickerCallback) {
@@ -110,7 +114,6 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
         this.red = assertColorValueInRange(red);
         this.green = assertColorValueInRange(green);
         this.blue = assertColorValueInRange(blue);
-
         this.withAlpha = true;
     }
 
@@ -146,7 +149,7 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
         }
 
         setContentView(R.layout.materialcolorpicker__layout_color_picker);
-
+        dialogContainer = (LinearLayout) findViewById(R.id.dialog_container);
         colorView = findViewById(R.id.colorView);
 
         hexCode = (EditText) findViewById(R.id.hexCode);
@@ -160,7 +163,7 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
         redSeekBar.setOnSeekBarChangeListener(this);
         greenSeekBar.setOnSeekBarChangeListener(this);
         blueSeekBar.setOnSeekBarChangeListener(this);
-
+        setDialogSize();
         hexCode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(withAlpha ? 8 : 6)});
 
         hexCode.setOnEditorActionListener(
@@ -189,6 +192,23 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
                 sendColor();
             }
         });
+    }
+
+    private void setDialogSize(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int displayWidth = displayMetrics.widthPixels;
+        int displayHeight = displayMetrics.heightPixels;
+
+        setDialogContainerSize((int) (displayWidth * 0.5f), (int) (displayHeight * 0.5f));
+    }
+
+    private void setDialogContainerSize(int width, int height) {
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                width, height
+        );
+        dialogContainer.setLayoutParams(params);
+
     }
 
     private void initUi() {
